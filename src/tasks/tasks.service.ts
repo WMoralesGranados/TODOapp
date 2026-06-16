@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Task } from './entities/task.entity';
+import { Task, TaskStatus } from './entities/task.entity';
 import { Repository } from 'typeorm';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -17,8 +17,10 @@ export class TasksService {
     return await this.taskRepo.save(task);
   }
 
-  async findAll() {
-    return await this.taskRepo.find();
+  async findAll(status?: TaskStatus) {
+    return await this.taskRepo.find({
+      where: status ? { status } : {},
+    });
   }
 
   async findOne(id: string) {
