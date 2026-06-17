@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -36,19 +37,22 @@ export class TasksController {
 
   @ApiOperation({ summary: 'Obtiene una tarea por id' })
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.tasksService.findOne(id);
   }
 
   @ApiOperation({ summary: 'Actualiza una tarea por id.' })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateTaskDto: UpdateTaskDto,
+  ) {
     return this.tasksService.update(id, updateTaskDto);
   }
 
   @ApiOperation({ summary: 'Elimina una tarea por id.' })
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.tasksService.remove(id);
   }
 }
